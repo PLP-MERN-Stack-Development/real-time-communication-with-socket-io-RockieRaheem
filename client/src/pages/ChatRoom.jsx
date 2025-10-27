@@ -1,28 +1,28 @@
 // pages/ChatRoom.jsx - Main chat room component
-import { useEffect } from 'react';
-import MessageList from '../components/MessageList';
-import MessageInput from '../components/MessageInput';
-import UserList from '../components/UserList';
-import RoomList from '../components/RoomList';
-import TypingIndicator from '../components/TypingIndicator';
-import useChatStore from '../store/useChatStore';
-import useSocketEvents from '../hooks/useSocketEvents';
-import { socket } from '../socket/socket';
-import { FaSignOutAlt, FaSearch } from 'react-icons/fa';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { useEffect } from "react";
+import MessageList from "../components/MessageList";
+import MessageInput from "../components/MessageInput";
+import UserList from "../components/UserList";
+import RoomList from "../components/RoomList";
+import TypingIndicator from "../components/TypingIndicator";
+import useChatStore from "../store/useChatStore";
+import useSocketEvents from "../hooks/useSocketEvents";
+import { socket } from "../socket/socket";
+import { FaSignOutAlt, FaSearch } from "react-icons/fa";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const ChatRoom = ({ onLogout }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  
-  const { 
-    messages, 
-    currentRoom, 
-    currentUser, 
+
+  const {
+    messages,
+    currentRoom,
+    currentUser,
     selectedUser,
     privateMessages,
-    isConnected 
+    isConnected,
   } = useChatStore();
 
   // Setup socket event listeners
@@ -36,25 +36,25 @@ const ChatRoom = ({ onLogout }) => {
   const handleLogout = () => {
     socket.disconnect();
     useChatStore.getState().reset();
-    toast.success('Logged out successfully');
+    toast.success("Logged out successfully");
     onLogout();
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      socket.emit('search_messages', { 
-        query: searchQuery.trim(), 
-        room: currentRoom 
+      socket.emit("search_messages", {
+        query: searchQuery.trim(),
+        room: currentRoom,
       });
-      toast.success('Searching messages...');
+      toast.success("Searching messages...");
     }
   };
 
   // Get messages to display (room messages or private messages)
   const displayMessages = selectedUser
     ? privateMessages[selectedUser.id] || []
-    : messages.filter(msg => msg.room === currentRoom || msg.system);
+    : messages.filter((msg) => msg.room === currentRoom || msg.system);
 
   return (
     <div className="h-screen flex bg-gray-100">
@@ -71,7 +71,7 @@ const ChatRoom = ({ onLogout }) => {
                 {selectedUser ? `@${selectedUser.username}` : `#${currentRoom}`}
               </h1>
               <p className="text-sm text-gray-500">
-                {selectedUser ? 'Private conversation' : 'Public room'}
+                {selectedUser ? "Private conversation" : "Public room"}
               </p>
             </div>
             {!isConnected && (
@@ -89,7 +89,7 @@ const ChatRoom = ({ onLogout }) => {
             >
               <FaSearch className="text-gray-600" />
             </button>
-            
+
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
