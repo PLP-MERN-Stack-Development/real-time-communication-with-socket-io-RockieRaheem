@@ -1,3 +1,4 @@
+<img width="1911" height="848" alt="Image" src="https://github.com/user-attachments/assets/c00b0c44-24d7-4082-8de2-57322aaed260" />
 # 💬 Real-Time Chat Application with Socket.io
 
 A fully-featured real-time chat application built with Socket.io, React, Express, and Node.js. This application demonstrates bidirectional communication, real-time messaging, and advanced chat features.
